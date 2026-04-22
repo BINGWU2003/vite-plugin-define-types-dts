@@ -1,19 +1,25 @@
 {
-  "name": "pkg-placeholder",
+  "name": "vite-plugin-define-dts",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "packageManager": "pnpm@10.33.0",
-  "description": "_description_",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "description": "Generate TypeScript declaration files from Vite define config.",
+  "author": "BINGWU2003",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/pkg-placeholder#readme",
+  "funding": "https://github.com/sponsors/BINGWU2003",
+  "homepage": "https://github.com/BINGWU2003/vite-plugin-define-dts#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/pkg-placeholder.git"
+    "url": "git+https://github.com/BINGWU2003/vite-plugin-define-dts.git"
   },
-  "bugs": "https://github.com/antfu/pkg-placeholder/issues",
-  "keywords": [],
+  "bugs": "https://github.com/BINGWU2003/vite-plugin-define-dts/issues",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "define",
+    "dts",
+    "typescript"
+  ],
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.mjs",
@@ -35,6 +41,9 @@
     "test": "vitest",
     "typecheck": "tsc",
     "prepare": "simple-git-hooks"
+  },
+  "peerDependencies": {
+    "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:cli",
