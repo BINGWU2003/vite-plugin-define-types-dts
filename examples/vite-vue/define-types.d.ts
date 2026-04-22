@@ -2,6 +2,3 @@
 declare const __APP_NAME__: string
 declare const __ENABLE_DEMO__: boolean
 declare const __NUMBER__: number
-declare const __VUE_OPTIONS_API__: boolean
-declare const __VUE_PROD_DEVTOOLS__: boolean
-declare const __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: boolean

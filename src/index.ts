@@ -1,4 +1,4 @@
-import type { Plugin } from 'vite'
+import type { Plugin, UserConfig } from 'vite'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 
@@ -39,15 +39,28 @@ function inferDefineType(value: unknown): string {
   }
 }
 
+function normalizeDefines(defines: UserConfig['define']): Record<string, unknown> {
+  if (!defines || typeof defines !== 'object' || Array.isArray(defines))
+    return {}
+
+  return { ...defines }
+}
+
 export function defineTypesPlugin(options: DefineTypesPluginOptions = {}): Plugin {
   const {
     outputPath = 'src/define-types.d.ts',
   } = options
+  let userDefines: Record<string, unknown> = {}
 
   return {
     name: 'define-types',
+    enforce: 'pre',
+    apply: 'serve',
+    config(config) {
+      userDefines = normalizeDefines(config.define)
+    },
     configResolved(config) {
-      const defines = config.define ?? {}
+      const defines = userDefines
       const invalidKeys: string[] = []
       const lines = Object.entries(defines)
         .sort(([a], [b]) => a.localeCompare(b))
