@@ -51,6 +51,9 @@ declare const __BUILD_NUMBER__: number
 - `options.outputPath`：
   声明文件输出路径，基于 Vite `config.root` 解析。
   默认值：`src/define-types.d.ts`。
+- `options.apply`：
+  插件生效阶段，可选 `serve` 或 `build`。
+  默认值：`serve`（仅开发环境）。
 
 ## TypeScript 配置
 
