@@ -1,5 +1,5 @@
 {
-  "name": "vite-plugin-define-dts",
+  "name": "vite-plugin-define-types-dts",
   "type": "module",
   "version": "1.0.0",
   "packageManager": "pnpm@10.33.0",
@@ -7,12 +7,12 @@
   "author": "BINGWU2003",
   "license": "MIT",
   "funding": "https://github.com/sponsors/BINGWU2003",
-  "homepage": "https://github.com/BINGWU2003/vite-plugin-define-dts#readme",
+  "homepage": "https://github.com/BINGWU2003/vite-plugin-define-types-dts#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BINGWU2003/vite-plugin-define-dts.git"
+    "url": "git+https://github.com/BINGWU2003/vite-plugin-define-types-dts.git"
   },
-  "bugs": "https://github.com/BINGWU2003/vite-plugin-define-dts/issues",
+  "bugs": "https://github.com/BINGWU2003/vite-plugin-define-types-dts/issues",
   "keywords": [
     "vite",
     "vite-plugin",
@@ -37,6 +37,7 @@
     "lint": "eslint",
     "prepublishOnly": "nr build",
     "release": "bumpp",
+    "publish:npm": "npm publish",
     "start": "tsx src/index.ts",
     "test": "vitest",
     "typecheck": "tsc",

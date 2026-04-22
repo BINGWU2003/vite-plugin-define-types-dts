@@ -4,6 +4,10 @@ import { dirname, resolve } from 'node:path'
 
 const DEFINE_KEY_RE = /^__[A-Z0-9_]+__$/
 
+export interface DefineTypesPluginOptions {
+  outputPath?: string
+}
+
 function inferTsType(value: unknown): string {
   if (value === null)
     return 'null'
@@ -35,7 +39,11 @@ function inferDefineType(value: unknown): string {
   }
 }
 
-export function defineTypesPlugin(outputPath = 'src/define-types.d.ts'): Plugin {
+export function defineTypesPlugin(options: DefineTypesPluginOptions = {}): Plugin {
+  const {
+    outputPath = 'src/define-types.d.ts',
+  } = options
+
   return {
     name: 'define-types',
     configResolved(config) {

@@ -1,4 +1,4 @@
-# vite-plugin-define-dts
+# vite-plugin-define-types-dts
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -10,7 +10,7 @@
 ## 安装
 
 ```bash
-pnpm add -D vite-plugin-define-dts
+pnpm add -D vite-plugin-define-types-dts
 ```
 
 ## 使用方式
@@ -18,7 +18,7 @@ pnpm add -D vite-plugin-define-dts
 ```ts
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
-import { defineTypesPlugin } from 'vite-plugin-define-dts'
+import { defineTypesPlugin } from 'vite-plugin-define-types-dts'
 
 export default defineConfig({
   define: {
@@ -28,7 +28,9 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    defineTypesPlugin('src/define-types.d.ts'),
+    defineTypesPlugin({
+      outputPath: 'src/define-types.d.ts',
+    }),
   ],
 })
 ```
@@ -44,11 +46,39 @@ declare const __BUILD_NUMBER__: number
 
 ## API
 
-`defineTypesPlugin(outputPath?: string)`
+`defineTypesPlugin(options?: DefineTypesPluginOptions)`
 
-- `outputPath`：
+- `options.outputPath`：
   声明文件输出路径，基于 Vite `config.root` 解析。
   默认值：`src/define-types.d.ts`。
+
+## TypeScript 配置
+
+请确保 `tsconfig` 的 `include` 包含生成的声明文件路径（可参考 `examples/vite-vue/tsconfig.app.json`）。
+
+如果你将 `outputPath` 配置为根目录下的 `define-types.d.ts`，需要显式包含该文件：
+
+```json
+{
+  "include": [
+    "define-types.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.d.ts"
+  ]
+}
+```
+
+## 项目命令
+
+- `pnpm run dev`：本地监听构建（watch）。
+- `pnpm run build`：执行正式构建并产出 `dist`。
+- `pnpm run test`：运行测试。
+- `pnpm run lint`：执行代码检查。
+- `pnpm run typecheck`：执行 TypeScript 类型检查。
+- `pnpm run release`：使用 `bumpp` 更新版本并创建发布提交。
+- `pnpm run publish:npm`：发布当前包到 npm。
 
 ## 注意事项
 
@@ -62,11 +92,11 @@ declare const __BUILD_NUMBER__: number
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/vite-plugin-define-dts?style=flat&colorA=080f12&colorB=1fa669
-[npm-version-href]: https://npmjs.com/package/vite-plugin-define-dts
-[npm-downloads-src]: https://img.shields.io/npm/dm/vite-plugin-define-dts?style=flat&colorA=080f12&colorB=1fa669
-[npm-downloads-href]: https://npmjs.com/package/vite-plugin-define-dts
-[bundle-src]: https://img.shields.io/bundlephobia/minzip/vite-plugin-define-dts?style=flat&colorA=080f12&colorB=1fa669&label=minzip
-[bundle-href]: https://bundlephobia.com/result?p=vite-plugin-define-dts
-[license-src]: https://img.shields.io/github/license/BINGWU2003/vite-plugin-define-dts.svg?style=flat&colorA=080f12&colorB=1fa669
-[license-href]: https://github.com/BINGWU2003/vite-plugin-define-dts/blob/main/LICENSE.md
+[npm-version-src]: https://img.shields.io/npm/v/vite-plugin-define-types-dts?style=flat&colorA=080f12&colorB=1fa669
+[npm-version-href]: https://npmjs.com/package/vite-plugin-define-types-dts
+[npm-downloads-src]: https://img.shields.io/npm/dm/vite-plugin-define-types-dts?style=flat&colorA=080f12&colorB=1fa669
+[npm-downloads-href]: https://npmjs.com/package/vite-plugin-define-types-dts
+[bundle-src]: https://img.shields.io/bundlephobia/minzip/vite-plugin-define-types-dts?style=flat&colorA=080f12&colorB=1fa669&label=minzip
+[bundle-href]: https://bundlephobia.com/result?p=vite-plugin-define-types-dts
+[license-src]: https://img.shields.io/github/license/BINGWU2003/vite-plugin-define-types-dts.svg?style=flat&colorA=080f12&colorB=1fa669
+[license-href]: https://github.com/BINGWU2003/vite-plugin-define-types-dts/blob/main/LICENSE.md

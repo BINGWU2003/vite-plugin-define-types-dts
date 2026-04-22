@@ -12,7 +12,9 @@ export default defineConfig({
 
   plugins: [
     vue(),
-    defineTypesPlugin('src/define-types.d.ts'),
+    defineTypesPlugin({
+      outputPath: 'define-types.d.ts',
+    }),
   ],
   server: {
     host: '0.0.0.0',
