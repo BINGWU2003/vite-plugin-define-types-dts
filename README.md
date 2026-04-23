@@ -50,16 +50,26 @@ declare const __BUILD_NUMBER__: number
 
 - `options.outputPath`：
   声明文件输出路径，基于 Vite `config.root` 解析。
-  默认值：`src/define-types.d.ts`。
+  默认值：`define-types.d.ts`。
 - `options.apply`：
-  插件生效阶段，可选 `serve` 或 `build`。
+  插件生效阶段，类型为 `Plugin['apply']`，支持 `serve`、`build` 或函数形式。
   默认值：`serve`（仅开发环境）。
+
+函数形式示例：
+
+```ts
+defineTypesPlugin({
+  apply(_, env) {
+    return env.command === 'serve'
+  },
+})
+```
 
 ## TypeScript 配置
 
 请确保 `tsconfig` 的 `include` 包含生成的声明文件路径（可参考 `examples/vite-vue/tsconfig.app.json`）。
 
-如果你将 `outputPath` 配置为根目录下的 `define-types.d.ts`，需要显式包含该文件：
+默认会生成到根目录 `define-types.d.ts`，请在 `include` 中显式包含该文件：
 
 ```json
 {

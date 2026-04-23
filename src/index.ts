@@ -5,7 +5,7 @@ import { dirname, resolve } from 'node:path'
 const DEFINE_KEY_RE = /^__[A-Z0-9_]+__$/
 
 export interface DefineTypesPluginOptions {
-  apply?: 'serve' | 'build'
+  apply?: Plugin['apply']
   outputPath?: string
 }
 
@@ -50,7 +50,7 @@ function normalizeDefines(defines: UserConfig['define']): Record<string, unknown
 export function defineTypesPlugin(options: DefineTypesPluginOptions = {}): Plugin {
   const {
     apply = 'serve',
-    outputPath = 'src/define-types.d.ts',
+    outputPath = 'define-types.d.ts',
   } = options
   let userDefines: Record<string, unknown> = {}
 
