@@ -2,11 +2,14 @@ import type { Plugin, UserConfig } from 'vite'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 
-const DEFINE_KEY_RE = /^__[A-Z0-9_]+__$/
+const STRICT_DEFINE_KEY_RE = /^__\w+__$/
+const IDENTIFIER_KEY_RE = /^[$A-Z_][\w$]*$/i
 
 export interface DefineTypesPluginOptions {
   apply?: Plugin['apply']
+  excludeKeys?: string[]
   outputPath?: string
+  strictDefineKey?: boolean
 }
 
 function inferTsType(value: unknown): string {
@@ -50,8 +53,12 @@ function normalizeDefines(defines: UserConfig['define']): Record<string, unknown
 export function defineTypesPlugin(options: DefineTypesPluginOptions = {}): Plugin {
   const {
     apply = 'serve',
+    excludeKeys = [],
     outputPath = 'define-types.d.ts',
+    strictDefineKey = true,
   } = options
+  const excludedKeySet = new Set(excludeKeys)
+  const defineKeyRe = strictDefineKey ? STRICT_DEFINE_KEY_RE : IDENTIFIER_KEY_RE
   let userDefines: Record<string, unknown> = {}
 
   return {
@@ -63,20 +70,31 @@ export function defineTypesPlugin(options: DefineTypesPluginOptions = {}): Plugi
     },
     configResolved(config) {
       const defines = userDefines
+      const excludedKeys: string[] = []
       const invalidKeys: string[] = []
       const lines = Object.entries(defines)
         .sort(([a], [b]) => a.localeCompare(b))
         .flatMap(([key, value]) => {
-          if (!DEFINE_KEY_RE.test(key)) {
+          if (excludedKeySet.has(key)) {
+            excludedKeys.push(key)
+            return []
+          }
+          if (!defineKeyRe.test(key)) {
             invalidKeys.push(key)
             return []
           }
           return [`declare const ${key}: ${inferDefineType(value)}`]
         })
 
+      if (excludedKeys.length > 0) {
+        config.logger.info(
+          `[define-types] Excluded ${excludedKeys.length} define key(s): ${excludedKeys.join(', ')}`,
+        )
+      }
+
       if (invalidKeys.length > 0) {
         config.logger.warn(
-          `[define-types] Skipped ${invalidKeys.length} define key(s) that do not match ${DEFINE_KEY_RE}: ${invalidKeys.join(', ')}`,
+          `[define-types] Skipped ${invalidKeys.length} define key(s) that do not match ${defineKeyRe}: ${invalidKeys.join(', ')}`,
         )
       }
 

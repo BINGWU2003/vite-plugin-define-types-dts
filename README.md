@@ -30,6 +30,8 @@ export default defineConfig({
     vue(),
     defineTypesPlugin({
       outputPath: 'src/define-types.d.ts',
+      excludeKeys: ['__BUILD_NUMBER__'],
+      strictDefineKey: true,
     }),
   ],
 })
@@ -54,6 +56,12 @@ declare const __BUILD_NUMBER__: number
 - `options.apply`：
   插件生效阶段，类型为 `Plugin['apply']`，支持 `serve`、`build` 或函数形式。
   默认值：`serve`（仅开发环境）。
+- `options.excludeKeys`：
+  指定不生成声明的 `define` key 列表。
+  默认值：`[]`。
+- `options.strictDefineKey`：
+  是否仅处理 `__xxx__` 形式的 key。
+  默认值：`true`。
 
 函数形式示例：
 
@@ -95,7 +103,8 @@ defineTypesPlugin({
 
 ## 注意事项
 
-- 仅会生成匹配 `^__[A-Z0-9_]+__$` 的 key。
+- `strictDefineKey: true` 时，仅会生成匹配 `^__[A-Za-z0-9_]+__$` 的 key。
+- `strictDefineKey: false` 时，会生成所有合法变量名（如 `APP_NAME`、`$FLAG`），不合法标识符会跳过。
 - 无法可靠推断的 `define` 值会回退为 `unknown`。
 - 仅在内容变化时写入文件，避免无意义改动。
 

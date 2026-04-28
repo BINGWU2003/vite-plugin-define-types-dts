@@ -3,7 +3,9 @@
 // Interfaces
 export interface DefineTypesPluginOptions {
   apply?: Plugin['apply'];
+  excludeKeys?: string[];
   outputPath?: string;
+  strictDefineKey?: boolean;
 }
 
 // Functions
